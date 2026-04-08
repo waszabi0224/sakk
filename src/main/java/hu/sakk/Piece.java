@@ -1,7 +1,7 @@
 package hu.sakk;
 
 //közös bábú-tulajdonságok
-public class Piece {
+public abstract class Piece {
     
     //true = white
     //false = dark
