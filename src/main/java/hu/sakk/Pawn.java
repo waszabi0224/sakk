@@ -17,7 +17,9 @@ public class Pawn extends Piece {
                 int goalColL = piece.getCol() - 1;
 
                 if(piece.getRow() == 1) {
-                    if((board.isEnemy(piece, goalRowR, goalColR) || board.isEnemy(piece, goalRowR, goalColL)) && ((newRow == goalRowR && newCol == goalColR) || (newRow == goalRowR && newCol == goalColL))) {
+                    if(((board.isRightPosition(goalRowR, goalColR) && board.isEnemy(piece, goalRowR, goalColR)) 
+                        || (board.isRightPosition(goalRowR, goalColL) && board.isEnemy(piece, goalRowR, goalColL))) 
+                        && ((newRow == goalRowR && newCol == goalColR) || (newRow == goalRowR && newCol == goalColL))) {
                         return true;
                     }
 
@@ -27,7 +29,9 @@ public class Pawn extends Piece {
                         }
                     }
                 } else {
-                    if((board.isEnemy(piece, goalRowR, goalColR) || board.isEnemy(piece, goalRowR, goalColL)) && ((newRow == goalRowR && newCol == goalColR) || (newRow == goalRowR && newCol == goalColL))) {
+                    if(((board.isRightPosition(goalRowR, goalColR) && board.isEnemy(piece, goalRowR, goalColR)) 
+                        || (board.isRightPosition(goalRowR, goalColL) && board.isEnemy(piece, goalRowR, goalColL))) 
+                        && ((newRow == goalRowR && newCol == goalColR) || (newRow == goalRowR && newCol == goalColL))) {
                         return true;
                     }
 
@@ -43,7 +47,9 @@ public class Pawn extends Piece {
                 int goalColR = piece.getCol() + 1;
 
                 if(piece.getRow() == 6) {
-                    if((board.isEnemy(piece, goalRowL, goalColL) || board.isEnemy(piece, goalRowL, goalColR)) && ((newRow == goalRowL && newCol == goalColL) || (newRow == goalRowL && newCol == goalColR))) {
+                    if(((board.isRightPosition(goalRowL, goalColL) && board.isEnemy(piece, goalRowL, goalColL)) 
+                        || (board.isRightPosition(goalRowL, goalColR) && board.isEnemy(piece, goalRowL, goalColR))) 
+                        && ((newRow == goalRowL && newCol == goalColL) || (newRow == goalRowL && newCol == goalColR))) {
                         return true;
                     }
 
@@ -53,7 +59,9 @@ public class Pawn extends Piece {
                         }
                     }
                 } else {
-                    if((board.isEnemy(piece, goalRowL, goalColL) || board.isEnemy(piece, goalRowL, goalColR)) && ((newRow == goalRowL && newCol == goalColL) || (newRow == goalRowL && newCol == goalColR))) {
+                    if(((board.isRightPosition(goalRowL, goalColL) && board.isEnemy(piece, goalRowL, goalColL)) 
+                        || (board.isRightPosition(goalRowL, goalColR) && board.isEnemy(piece, goalRowL, goalColR))) 
+                        && ((newRow == goalRowL && newCol == goalColL) || (newRow == goalRowL && newCol == goalColR))) {
                         return true;
                     }
 
