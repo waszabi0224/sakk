@@ -12,31 +12,31 @@ public class Board {
 
     public void createTable() {
         //fehér bábúk
-        board[0][0] = new Rook(false, true, 0, 0);
-        board[0][1] = new Knight(false, true, 0, 1);
-        board[0][2] = new Bishop(false, true, 0, 2);
-        board[0][3] = new King(false, true, 0, 3);
-        board[0][4] = new Queen(false, true, 0, 4);
-        board[0][5] = new Bishop(false, true, 0, 5);
-        board[0][6] = new Knight(false, true, 0, 6);
-        board[0][7] = new Rook(false, true, 0, 7);
+        board[0][0] = new Rook(true, true, 0, 0);
+        board[0][1] = new Knight(true, true, 0, 1);
+        board[0][2] = new Bishop(true, true, 0, 2);
+        board[0][3] = new King(true, true, 0, 3);
+        board[0][4] = new Queen(true, true, 0, 4);
+        board[0][5] = new Bishop(true, true, 0, 5);
+        board[0][6] = new Knight(true, true, 0, 6);
+        board[0][7] = new Rook(true, true, 0, 7);
 
         for(int i = 0; i < 8; i++) {
-            board[1][i] = new Pawn(false, true, 1, i);
+            board[1][i] = new Pawn(true, true, 1, i);
         }
 
         //fekete bábúk
-        board[7][0] = new Rook(true, true, 7, 0);
-        board[7][1] = new Knight(true, true, 7, 1);
-        board[7][2] = new Bishop(true, true, 7, 2);
-        board[7][3] = new King(true, true, 7, 3);
-        board[7][4] = new Queen(true, true, 7, 4);
-        board[7][5] = new Bishop(true, true, 7, 5);
-        board[7][6] = new Knight(true, true, 7, 6);
-        board[7][7] = new Rook(true, true, 7, 7);
+        board[7][0] = new Rook(false, true, 7, 0);
+        board[7][1] = new Knight(false, true, 7, 1);
+        board[7][2] = new Bishop(false, true, 7, 2);
+        board[7][3] = new King(false, true, 7, 3);
+        board[7][4] = new Queen(false, true, 7, 4);
+        board[7][5] = new Bishop(false, true, 7, 5);
+        board[7][6] = new Knight(false, true, 7, 6);
+        board[7][7] = new Rook(false, true, 7, 7);
 
         for(int i = 0; i < 8; i++) {
-            board[6][i] = new Pawn(true, true, 6, i);
+            board[6][i] = new Pawn(false, true, 6, i);
         }
     }
 
@@ -60,8 +60,24 @@ public class Board {
         }
     }
 
+    public boolean isEnemy(Piece piece, int row, int col) {
+        if(board[row][col] != null && getPiece(row, col).isColor() != piece.isColor()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isRightPosition(int newRow, int newCol) {
+        if(newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void movePiece(Piece piece, int newRow, int newCol) {
-        if(piece != null && newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+        if(piece != null && isRightPosition(newRow, newCol)) {
             board[piece.getRow()][piece.getCol()] = null;
             board[newRow][newCol] = piece;
             piece.setRow(newRow);
