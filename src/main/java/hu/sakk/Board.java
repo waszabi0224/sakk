@@ -69,6 +69,83 @@ public class Board {
         }
     }
 
+    public boolean isFreeStraightWay(Piece piece, int newRow, int newCol) {
+        //függőleges út
+        if(newCol == piece.getCol()) {
+            int step;
+
+            if(newRow > piece.getRow()) {
+                step = 1;
+            } else {
+                step = -1;
+            }
+
+            for(int i = piece.getRow() + step; i != newRow; i += step) {
+                if(board[i][piece.getCol()] != null) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //vízszintes út
+        if(piece.getRow() == newRow) {
+            int step;
+
+            if(newCol > piece.getCol()) {
+                step = 1;
+            } else {
+                step = -1;
+            }
+
+            for(int i = piece.getCol() + step; i != newCol; i += step) {
+                if(board[piece.getRow()][i] != null) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isFreeDiagonalWay(Piece piece, int newRow, int newCol) {
+        if(Math.abs(newRow - piece.getRow()) != Math.abs(newCol - piece.getCol())) {
+            return false;
+        }
+
+        int rowStep;
+        int colStep;
+
+        if(newRow > piece.getRow()) {
+            rowStep = 1;
+        } else {
+            rowStep = -1;
+        }
+
+        if(newCol > piece.getCol()) {
+            colStep = 1;
+        } else {
+            colStep = -1;
+        }
+            
+        int row = piece.getRow() + rowStep;
+        int col = piece.getCol() + colStep;
+
+        while (row != newRow && col != newCol) {
+            if(board[row][col] != null) {
+                return false;
+            }
+
+            row += rowStep;
+            col += colStep;
+        }
+
+        return true;
+    }
+
 
 
 }
