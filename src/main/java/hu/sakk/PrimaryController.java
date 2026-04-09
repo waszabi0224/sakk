@@ -128,9 +128,11 @@ public class PrimaryController {
             selectedCol = -1;
             drawPieces();
             refreshSelection();
-            statusLabel.setText(game.isTurn() ? "Fehér következik" : "Fekete következik");
+            statusLabel.setText(game.getMessage());
         } else {
-            statusLabel.setText("Szabálytalan lépés");
+            drawPieces();
+            refreshSelection();
+            statusLabel.setText(game.getMessage());
         }
     }
 
