@@ -7,9 +7,7 @@ public class Knight extends Piece {
         super(color, alive, row, col);
     }
 
-    Board board = new Board();
-
-    public boolean isRightStepKnight(Piece piece, int newRow, int newCol) {
+    public boolean isRightStepKnight(Board board, Piece piece, int newRow, int newCol) {
 
         if(board.isRightPosition(newRow, newCol)) {
 

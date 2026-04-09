@@ -7,9 +7,7 @@ public class Queen extends Piece {
         super(color, alive, row, col);
     }
 
-    Board board = new Board();
-
-    public boolean isRightStepQueen(Piece piece, int newRow, int newCol) {
+    public boolean isRightStepQueen(Board board, Piece piece, int newRow, int newCol) {
         if(board.isRightPosition(newRow, newCol)) { 
             if(Math.abs(piece.getRow() - newRow) > 0 && piece.getCol() - newCol == 0) {
                 if(board.isFreeStraightWay(piece, newRow, newCol) && (board.isEmpty(newRow, newCol) || board.isEnemy(piece, newRow, newCol))) {

@@ -7,9 +7,7 @@ public class Pawn extends Piece {
         super(color, alive, row, col);
     }
 
-    Board board = new Board();
-
-    public boolean isRightStepPawn(Piece piece, int newRow, int newCol) {
+    public boolean isRightStepPawn(Board board, Piece piece, int newRow, int newCol) {
         if(board.isRightPosition(newRow, newCol)) {
             if(piece.isColor() == true) {
                 int goalRowR = piece.getRow() + 1;
