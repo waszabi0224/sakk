@@ -24,6 +24,9 @@ public class PrimaryController {
     private int selectedCol;
 
     @FXML
+    private Label winnLabel;
+
+    @FXML
     private void initialize() {
         game = new Game();
         createBoard();
@@ -97,6 +100,10 @@ public class PrimaryController {
     }
 
     private void handleClick(int row, int col) {
+        if(game.isGameOver()) {
+            return;
+        }
+
         Piece selectedPiece = game.getBoard().getPiece(row, col);
 
         if(game.getSelectedPiece() == null) {
@@ -133,6 +140,11 @@ public class PrimaryController {
             drawPieces();
             refreshSelection();
             statusLabel.setText(game.getMessage());
+        }
+
+        if(game.isGameOver()) {
+            winnLabel.setText(game.getWinnerMessage());
+            boardGrid.setStyle("-fx-opacity: 0.6;");
         }
     }
 

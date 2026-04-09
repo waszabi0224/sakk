@@ -22,5 +22,6 @@
 
    <center>
       <GridPane fx:id="boardGrid" alignment="CENTER" />
+      <Label fx:id="winnerlabel" text="" />
    </center>
 </BorderPane>
