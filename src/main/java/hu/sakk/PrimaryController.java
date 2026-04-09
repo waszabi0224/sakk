@@ -23,8 +23,8 @@ public class PrimaryController {
     private int selectedRow;
     private int selectedCol;
 
-    @FXML
-    private Label winnLabel;
+    //@FXML
+    //private Label winnerlabel;
 
     @FXML
     private void initialize() {
@@ -104,11 +104,11 @@ public class PrimaryController {
             return;
         }
 
-        Piece selectedPiece = game.getBoard().getPiece(row, col);
+        Piece clickedPiece = game.getBoard().getPiece(row, col);
 
         if(game.getSelectedPiece() == null) {
-            if(selectedPiece != null && selectedPiece.isColor() == game.isTurn()) {
-                game.setSelectedPiece(selectedPiece);
+            if(clickedPiece != null && clickedPiece.isColor() == game.isTurn()) {
+                game.setSelectedPiece(clickedPiece);
                 selectedRow = row;
                 selectedCol = col;
                 statusLabel.setText("Bábu kiválasztva");
@@ -118,8 +118,8 @@ public class PrimaryController {
             return;
         }
 
-        if(selectedPiece != null && selectedPiece.isColor() == game.isTurn()) {
-            game.setSelectedPiece(selectedPiece);
+        if(clickedPiece != null && clickedPiece.isColor() == game.isTurn()) {
+            game.setSelectedPiece(clickedPiece);
             selectedRow = row;
             selectedCol = col;
             statusLabel.setText("Másik bábu kiválasztva");
@@ -143,7 +143,7 @@ public class PrimaryController {
         }
 
         if(game.isGameOver()) {
-            winnLabel.setText(game.getWinnerMessage());
+            //winnerlabel.setText(game.getWinnerMessage());
             boardGrid.setStyle("-fx-opacity: 0.6;");
         }
     }

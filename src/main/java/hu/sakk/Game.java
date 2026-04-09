@@ -112,15 +112,19 @@ public class Game {
                         return true;
                     } else {
                         message = "Sakk! " + (turn ? "Fehér" : "Fekete") + " következik";
+                        return true;
                     }
                 } else {
                     if(isPatt(turn)) {
+                        message = "Patt! Döntetlen";
                         gameOver = true;
                         winnerMessage = "Patt! Döntetlen";
+                        return true;
                     }
+
                     message = turn ? "Fehér következik" : "Fekete következik";
+                    return true;
                 }
-                return true;
             }
         } 
 
@@ -188,269 +192,87 @@ public class Game {
     }
 
     public boolean isMatt(boolean color) {
-        if(isSakk(color)) {
-            for(int row = 0; row < 8; row++) {
-                for(int col = 0; col < 8; col++) {
-                    Piece piece = board.getPiece(row, col);
-
-                    if(piece != null && piece.isColor() == color) {
-
-                        for(int newRow = 0; newRow < 8; newRow++) {
-                            for(int newCol = 0; newCol < 8; newCol++) {
-
-                                if(piece instanceof Knight) {
-                                    if(((Knight) piece).isRightStepKnight(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            return false;
-                                        }
-                                    }
-                                }
-
-                                if(piece instanceof Rook) {
-                                    if(((Rook) piece).isRightStepRook(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            return false;
-                                        }
-                                    }
-                                }
-
-                                if(piece instanceof Bishop) {
-                                    if(((Bishop) piece).isRightStepBishop(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            return false;
-                                        }
-                                    }
-                                }
-
-                                if(piece instanceof Queen) {
-                                    if(((Queen) piece).isRightStepQueen(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            return false;
-                                        }
-                                    }
-                                }
-
-                                if(piece instanceof Pawn) {
-                                    if(((Pawn) piece).isRightStepPawn(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            return false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return true;
+        return isSakk(color) && !hasAnyLegalMove(color);
     }
 
     public boolean isPatt(boolean color) {
-        if(!isSakk(color)) {
-            for(int row = 0; row < 8; row++) {
-                for(int col = 0; col < 8; col++) {
-                    Piece piece = board.getPiece(row, col);
+        return !isSakk(color) && !hasAnyLegalMove(color);
+    }
 
-                    if(piece != null && piece.isColor() == color) {
-                        for(int newRow = 0; newRow < 8; newRow++) {
-                            for(int newCol = 0; newCol < 8; newCol++) {
-                                if(piece instanceof Knight) {
-                                    if(((Knight) piece).isRightStepKnight(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
+    public boolean isSafeMove(Piece piece, boolean color, int newRow, int newCol) {
+        int formerRow = piece.getRow();
+        int formerCol = piece.getCol();
+        Piece targetPiece = board.getPiece(newRow, newCol);
 
-                                        board.movePiece(piece, newRow, newCol);
+        board.movePiece(piece, newRow, newCol);
 
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                            return false;
-                                        }
-                                        
+        if(isSakk(color)) {
+            board.setPiece(piece, formerRow, formerCol);
+            board.setPiece(targetPiece, newRow, newCol);
+            piece.setRow(formerRow);
+            piece.setCol(formerCol);
+        } else {
+            board.setPiece(piece, formerRow, formerCol);
+            board.setPiece(targetPiece, newRow, newCol);
+            piece.setRow(formerRow);
+            piece.setCol(formerCol);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasAnyLegalMove(boolean color) {
+        for(int row = 0; row < 8; row++) {
+            for(int col = 0; col < 8; col++) {
+                Piece piece = board.getPiece(row, col);
+
+                if(piece != null && piece.isColor() == color) {
+                    for(int newRow = 0; newRow < 8; newRow++) {
+                        for(int newCol = 0; newCol < 8; newCol++) {
+                            if(piece instanceof Knight) {
+                                if(((Knight) piece).isRightStepKnight(board, piece, newRow, newCol)) {
+                                    if(isSafeMove(piece, color, newRow, newCol)) {
+                                        return true;
                                     }
                                 }
+                            }
 
-                                if(piece instanceof Rook) {
-                                    if(((Rook) piece).isRightStepRook(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                            return false;
-                                        }
-                                        
+                            if(piece instanceof Rook) {
+                                if(((Rook) piece).isRightStepRook(board, piece, newRow, newCol)) {
+                                    if(isSafeMove(piece, color, newRow, newCol)) {
+                                        return true;
                                     }
                                 }
+                            }
 
-                                if(piece instanceof Bishop) {
-                                    if(((Bishop) piece).isRightStepBishop(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                            return false;
-                                        }
-                                        
+                            if(piece instanceof Bishop) {
+                                if(((Bishop) piece).isRightStepBishop(board, piece, newRow, newCol)) {
+                                    if(isSafeMove(piece, color, newRow, newCol)) {
+                                        return true;
                                     }
                                 }
+                            }
 
-                                if(piece instanceof Queen) {
-                                    if(((Queen) piece).isRightStepQueen(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                            return false;
-                                        }
-                                        
+                            if(piece instanceof Queen) {
+                                if(((Queen) piece).isRightStepQueen(board, piece, newRow, newCol)) {
+                                    if(isSafeMove(piece, color, newRow, newCol)) {
+                                        return true;
                                     }
                                 }
+                            }
 
-                                if(piece instanceof King) {
-                                    if(((King) piece).isRightStepKing(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                            return false;
-                                        }
-                                        
+                            if(piece instanceof King) {
+                                if(((King) piece).isRightStepKing(board, piece, newRow, newCol)) {
+                                    if(isSafeMove(piece, color, newRow, newCol)) {
+                                        return true;
                                     }
                                 }
+                            }
 
-                                if(piece instanceof Pawn) {
-                                    if(((Pawn) piece).isRightStepPawn(board, piece, newRow, newCol)) {
-                                        int formerRow = piece.getRow();
-                                        int formerCol = piece.getCol();
-                                        Piece targetPiece = board.getPiece(newRow, newCol);
-
-                                        board.movePiece(piece, newRow, newCol);
-
-                                        if(isSakk(color)) {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                        } else {
-                                            board.setPiece(piece, formerRow, formerCol);
-                                            board.setPiece(targetPiece, newRow, newCol);
-                                            piece.setRow(formerRow);
-                                            piece.setCol(formerCol);
-                                            return false;
-                                        }
+                            if(piece instanceof Pawn) {
+                                if(((Pawn) piece).isRightStepPawn(board, piece, newRow, newCol)) {
+                                    if(isSafeMove(piece, color, newRow, newCol)) {
+                                        return true;
                                     }
                                 }
                             }
@@ -458,10 +280,7 @@ public class Game {
                     }
                 }
             }
-
-            return true;
         }
-        
         return false;
     }
 
