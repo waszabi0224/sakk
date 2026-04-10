@@ -93,7 +93,7 @@ public class Game {
 
         if(validMove(selectedPiece, newRow, newCol)) {
             board.movePiece(selectedPiece, newRow, newCol);
-            
+
             if(isSakk(selectedPiece.isColor())) {
                 board.setPiece(selectedPiece, formerRow, formerCol);
                 board.setPiece(targetPiece, newRow, newCol);
@@ -102,6 +102,7 @@ public class Game {
                 message = "Nem léphetsz, mert sakkban maradna a király";
                 return false;
             } else {
+                boolean transform = pawnTransformation(selectedPiece);
                 turn = !turn;
 
                 if(isSakk(turn)) {
@@ -111,6 +112,10 @@ public class Game {
                         winnerMessage = turn ? "Fekete nyert" : "Fehér nyert";
                         return true;
                     } else {
+                        if(transform) {
+                            message = "Sakk! A gyalog átváltozott. " + (turn ? "Fehér" : "Fekete") + " következik";
+                            return true;
+                        }
                         message = "Sakk! " + (turn ? "Fehér" : "Fekete") + " következik";
                         return true;
                     }
@@ -120,13 +125,18 @@ public class Game {
                         gameOver = true;
                         winnerMessage = "Patt! Döntetlen";
                         return true;
+                    } else {
+                        if(transform) {
+                            message = "A gyalog átváltozott. " + (turn ? "Fehér következik" : "Fekete következik");
+                            return true;
+                        } else {
+                            message = turn ? "Fehér következik" : "Fekete következik";
+                            return true;
+                        }
                     }
-
-                    message = turn ? "Fehér következik" : "Fekete következik";
-                    return true;
                 }
             }
-        } 
+        }
 
         message = "Szabálytalan lépés";
         return false;
@@ -281,6 +291,20 @@ public class Game {
                 }
             }
         }
+        return false;
+    }
+
+    public boolean pawnTransformation(Piece piece) {
+        if(piece.getClass() == Pawn.class) {
+            if(piece.isColor() == true && piece.getRow() == 7) {
+                board.setPiece(new Queen(true, true, piece.getRow(), piece.getCol()), piece.getRow(), piece.getCol());
+                return true;
+            } else if(piece.isColor() == false && piece.getRow() == 0) {
+                board.setPiece(new Queen(false, true, piece.getRow(), piece.getCol()), piece.getRow(), piece.getCol());
+                return true;
+            }
+        }
+
         return false;
     }
 

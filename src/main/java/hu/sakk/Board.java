@@ -137,14 +137,18 @@ public class Board {
 
         if(newRow > piece.getRow()) {
             rowStep = 1;
-        } else {
+        } else if(newRow < piece.getRow()) {
             rowStep = -1;
+        } else {
+            rowStep = 0;
         }
 
         if(newCol > piece.getCol()) {
             colStep = 1;
-        } else {
+        } else if(newCol < piece.getCol()) {
             colStep = -1;
+        } else {
+            colStep = 0;
         }
             
         int row = piece.getRow() + rowStep;
