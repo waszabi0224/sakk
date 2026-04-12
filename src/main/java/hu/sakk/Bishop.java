@@ -3,8 +3,8 @@ package hu.sakk;
 //futó
 public class Bishop extends Piece {
 
-    public Bishop(boolean color, boolean alive, int row, int col) {
-        super(color, alive, row, col);
+    public Bishop(boolean color, int row, int col) {
+        super(color, row, col);
     }
 
     public boolean isRightStepBishop(Board board, Piece piece, int newRow, int newCol) {

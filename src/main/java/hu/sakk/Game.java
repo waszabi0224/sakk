@@ -1,8 +1,5 @@
 package hu.sakk;
 
-//import java.util.ArrayList;
-//import java.util.List;
-
 //játéklogikája, körváltás, lépéskezelés
 public class Game {
 
@@ -91,6 +88,18 @@ public class Game {
 
         Piece targetPiece = board.getPiece(newRow, newCol);
 
+        if(selectedPiece.getClass() == King.class && Math.abs(newCol - selectedPiece.getCol()) == 2 && newRow == selectedPiece.getRow()) {
+            if(castling(selectedPiece, turn, newRow, newCol)) {
+                turn = !turn;
+                message = turn ? "Fehér következik" : "Fekete következik";
+                ((King) selectedPiece).setHasMoved(true);
+                return true;
+            } else {
+                message = "Nincs lehetőség sáncolásra";
+                return false;
+            }
+        }
+
         if(validMove(selectedPiece, newRow, newCol)) {
             board.movePiece(selectedPiece, newRow, newCol);
 
@@ -102,6 +111,14 @@ public class Game {
                 message = "Nem léphetsz, mert sakkban maradna a király";
                 return false;
             } else {
+                if(selectedPiece instanceof King) {
+                    ((King) selectedPiece).setHasMoved(true);
+                }
+
+                if(selectedPiece instanceof Rook) {
+                    ((Rook) selectedPiece).setHasMoved(true);
+                }
+
                 boolean transform = pawnTransformation(selectedPiece);
                 turn = !turn;
 
@@ -143,7 +160,6 @@ public class Game {
     }
 
     public boolean isSakk(boolean color) {
-        //List<Piece> sakkPieces = new ArrayList<>();
 
         boolean isSakk = false;
         int kingRow = -1;
@@ -297,11 +313,66 @@ public class Game {
     public boolean pawnTransformation(Piece piece) {
         if(piece.getClass() == Pawn.class) {
             if(piece.isColor() == true && piece.getRow() == 7) {
-                board.setPiece(new Queen(true, true, piece.getRow(), piece.getCol()), piece.getRow(), piece.getCol());
+                board.setPiece(new Queen(true, piece.getRow(), piece.getCol()), piece.getRow(), piece.getCol());
                 return true;
             } else if(piece.isColor() == false && piece.getRow() == 0) {
-                board.setPiece(new Queen(false, true, piece.getRow(), piece.getCol()), piece.getRow(), piece.getCol());
+                board.setPiece(new Queen(false, piece.getRow(), piece.getCol()), piece.getRow(), piece.getCol());
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean castling(Piece piece, boolean color, int newRow, int newCol) {
+        if(!isSakk(color)) {
+            if(piece.getClass() == King.class && newRow == piece.getRow()) {
+                if(board.isFreeStraightWay(piece, newRow, newCol)) {
+                    if(((King) piece).isHasMoved() == false) {
+                        if(newCol < piece.getCol() && color == true) {
+                            Piece rook = board.getPiece(0, 0);
+
+                            if(rook != null && rook.getClass() == Rook.class && rook.isColor() == color) {
+                                if(((Rook) rook).isHasMoved() == false && isSafeMove(piece, color, newRow, newCol)) {
+                                    board.movePiece(piece, newRow, newCol);
+                                    board.movePiece(rook, piece.getRow(), piece.getCol() + 1);
+                                    return true;
+                                }
+                            }
+                            
+                        } else if(newCol > piece.getCol() && color == true) {
+                            Piece rook = board.getPiece(0, 7);
+
+                            if(rook != null && rook.getClass() == Rook.class && rook.isColor() == color) {
+                                if(((Rook) rook).isHasMoved() == false && isSafeMove(piece, color, newRow, newCol)) {
+                                    board.movePiece(piece, newRow, newCol);
+                                    board.movePiece(rook, piece.getRow(), piece.getCol() - 1);
+                                    return true;
+                                }
+                            }
+                        } else if(newCol < piece.getCol() && color == false) {
+                            Piece rook = board.getPiece(7, 0);
+
+                            if(rook != null && rook.getClass() == Rook.class && rook.isColor() == color) {
+                                if(((Rook) rook).isHasMoved() == false && isSafeMove(piece, color, newRow, newCol)) {
+                                    board.movePiece(piece, newRow, newCol);
+                                    board.movePiece(rook, piece.getRow(), piece.getCol() + 1);
+                                    return true;
+                                }
+                            }
+                        } else if(newCol > piece.getCol() && color == false) {
+                            Piece rook = board.getPiece(7, 7);
+
+                            if(rook != null && rook.getClass() == Rook.class && rook.isColor() == color) {
+                                if(((Rook) rook).isHasMoved() == false && isSafeMove(piece, color, newRow, newCol)) {
+                                    board.movePiece(piece, newRow, newCol);
+                                    board.movePiece(rook, piece.getRow(), piece.getCol() - 1);
+                                    return true;
+                                }
+                            }
+                        } 
+                    }
+                }
             }
         }
 

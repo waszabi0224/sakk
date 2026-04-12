@@ -3,8 +3,19 @@ package hu.sakk;
 //király
 public class King extends Piece {
 
-    public King(boolean color, boolean alive, int row, int col) {
-        super(color, alive, row, col);
+    private boolean hasMoved;
+
+    public King(boolean color, boolean hasMoved, int row, int col) {
+        super(color, row, col);
+        this.hasMoved = false;
+    }
+
+    public boolean isHasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 
     public boolean isRightStepKing(Board board, Piece piece, int newRow, int newCol) {

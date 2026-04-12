@@ -6,13 +6,11 @@ public abstract class Piece {
     //true = white
     //false = dark
     public boolean color;
-    public boolean alive;
     public int row;
     public int col;
 
-    public Piece(boolean color, boolean alive, int row, int col) {
+    public Piece(boolean color, int row, int col) {
         this.color = color;
-        this.alive = alive;
         this.row = row;
         this.col = col;
     }
@@ -39,14 +37,6 @@ public abstract class Piece {
 
     public int getCol() {
         return col;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public boolean isAlive() {
-        return alive;
     }
 
 }

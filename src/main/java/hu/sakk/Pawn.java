@@ -3,8 +3,8 @@ package hu.sakk;
 //gyalog
 public class Pawn extends Piece {
 
-    public Pawn(boolean color, boolean alive, int row, int col) {
-        super(color, alive, row, col);
+    public Pawn(boolean color, int row, int col) {
+        super(color, row, col);
     }
 
     public boolean isRightStepPawn(Board board, Piece piece, int newRow, int newCol) {

@@ -3,8 +3,8 @@ package hu.sakk;
 //királynő
 public class Queen extends Piece {
 
-    public Queen(boolean color, boolean alive, int row, int col) {
-        super(color, alive, row, col);
+    public Queen(boolean color, int row, int col) {
+        super(color, row, col);
     }
 
     public boolean isRightStepQueen(Board board, Piece piece, int newRow, int newCol) {
